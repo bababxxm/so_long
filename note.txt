@@ -1,0 +1,76 @@
+void f_fill(char **tab, t_point size, char target, int row, int col)
+{
+    if (row < 0 || col < 0 || row >= size.y || col >= size.x)
+        return;
+    if (tab[row][col] == 'F' || tab[row][col] != target)
+        return;
+    tab[row][col] = 'F';
+
+    f_fill(tab, size, target, row -1, col);
+    f_fill(tab, size, target, row +1, col);
+    f_fill(tab, size, target, row, col - 1);
+    f_fill(tab, size, target, row, col + 1);
+}
+
+void  flood_fill(char **tab, t_point size, t_point begin)
+{
+    char target = tab[begin.y][begin.x];
+    f_fill(tab, size, target, begin.y, begin.x);
+}
+
+int		fd;
+	char	*line;
+	t_list	*read;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		ft_exit(ERROR_MSG, EXIT_FAILURE);
+	read = NULL;
+	line = get_next_line(fd);
+	while (line)
+	{
+		ft_lstadd_back(&read, ft_lstnew(line));
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+	}
+	file = read;
+	printf("width: %d\nheight: %d\n", count_width(file->content), count_height(file));
+	while (read)
+	{
+		printf("%s", (char *)read->content);
+		read = read -> next;
+	}
+	// while (line)
+	// {
+	// 	line = get_next_line(fd);
+	// 	ft_lstadd_back(&file, ft_lstnew(line));
+	// }
+	// int i = -1;
+	// while (file->next && ++i < 3)
+	// {
+	// 	printf("%s", (char *)file->content);
+	// 	file = file -> next;
+	// }
+
+void	map_setup(t_map *map, void *path)
+{
+	t_data	data;
+
+	data.file = NULL;
+	data.path = path;
+	data.fd = open(data.path, O_RDONLY);
+	while (1)
+	{
+		data.line = get_next_line(data.fd);
+		if (!data.line)
+			break ;
+		ft_lstadd_back(&data.file, data.line);
+	}
+	while (data.file)
+	{
+		printf("%s", (char *)data.file);
+		data.file = data.file -> next;
+	}
+	close(data.fd);
+}
