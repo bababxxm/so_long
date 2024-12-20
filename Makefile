@@ -76,6 +76,6 @@ re:			fclean all
 github:
 			@ git add .
 			@ git commit -m "so_long"
-			@ git push
+			@ git push -f
 
 .PHONY:		all clean fclean re github
