@@ -6,7 +6,7 @@
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 00:09:02 by sklaokli          #+#    #+#             */
-/*   Updated: 2024/12/21 01:41:48 by sklaokli         ###   ########.fr       */
+/*   Updated: 2024/12/24 17:07:39 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,19 @@ static int	count_height(t_list *read)
 	return (height);
 }
 
-static void	grid_setup(t_file *file, t_map *map)
+static void	grid_setup(t_map *map, t_file *file)
 {
 	int	i;
-	int	j;
 
 	map->grid = (char **)malloc(sizeof(char *) * (map->height + 1));
 	if (!map->grid)
-		exit(EXIT_FAILURE);
+		perror(MEMORY_ALLOCATION_FAILED_MSG);
 	i = -1;
-	while (++i < map->height)
+	while (++i < (int)map->height)
 	{
 		map->grid[i] = ft_split(file->read->content, '\n')[0];
 		if (!map->grid[i])
-			exit(EXIT_FAILURE);
+			perror(MEMORY_ALLOCATION_FAILED_MSG);
 		file->read = file->read->next;
 	}
 	i = -1;
@@ -55,40 +54,38 @@ static void	grid_setup(t_file *file, t_map *map)
 		printf("grid[%d]:\t%s\n", i, map->grid[i]);
 }
 
-static void	read_file(t_file *file, t_map *map)
+static void	read_file(t_map *map, t_file *file, void *path)
 {
-	int	width;
-	int	height;
-	
-	file->line = get_next_line(file->fd);
-	width = count_width(file->line);
-	while (file->line)
+	char	*line;
+
+	file->fd = open(path, O_RDONLY);
+	if (file->fd < 0)
+		perror(INVALID_FILE_DESCRIPTOR_MSG);
+	line = get_next_line(file->fd);
+	if (!line)
+		perror(EMPTY_FILE_MSG);
+	file->read = NULL;
+	map->width = count_width(line);
+	while (line)
 	{
-		ft_lstadd_back(&file->read, ft_lstnew(file->line));
-		file->line = get_next_line(file->fd);
-		if (!file->line)
+		ft_lstadd_back(&file->read, ft_lstnew(line));
+		line = get_next_line(file->fd);
+		if (!line)
 			break ;
-		if (width != count_width(file->line))
-			set_map_status(map, NON_RECTANGULAR);
+		if (map->width != count_width(line))
+			perror(NON_RECTANGULAR_MSG);
 	}
-	height = count_height(file->read);
-	map->width = width;
-	map->height = height;
+	map->height = count_height(file->read);
+	close(file->fd);
 }
 
-void	map_setup(t_map *map, void *path)
+void	map_setup(t_game *game, void *path)
 {
-	t_file	file;
-
-	// file = (t_file){0, NULL, NULL};
 	printf("---------------------------------------------\n");
 	printf("[ map set up ]\n---------------------------------------------\n");
-	file.fd = open(path, O_RDONLY);
-	if (file.fd < 0)
-		ft_exit(ERROR_MSG, EXIT_FAILURE);
-	read_file(&file, map);
-	printf("map width: %d\nmap height: %d\n", map->width, map->height);
-	grid_setup(&file, map);
+	game->map.status = VALID_MAP;
+	read_file(&game->map, &game->file, path);
+	printf("map width: %zu\nmap height: %zu\n", game->map.width, game->map.height);
+	grid_setup(&game->map, &game->file);
 	printf("---------------------------------------------\n");
-	// set_map_status(map, VALID_MAP);
 }

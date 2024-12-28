@@ -6,23 +6,25 @@
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 16:30:53 by sklaokli          #+#    #+#             */
-/*   Updated: 2024/12/20 23:55:38 by sklaokli         ###   ########.fr       */
+/*   Updated: 2024/12/28 21:42:54 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_H
 # define MAP_H
 
-typedef enum e_direction
+typedef struct s_object
 {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-}	t_direction;
+	t_empty_space	empty_space;
+	t_wall			wall;
+	t_collectible	collectible;
+	t_exit			exit;
+	ssize_t			total;
+}	t_object;
 
 typedef enum e_map_status
 {
+	UNDEFINED_PARAMETER,
 	NON_RECTANGULAR,
 	INCORRECT_BORDER,
 	MISSING_OBJECT,
@@ -30,29 +32,17 @@ typedef enum e_map_status
 	PLAYER_TRAPPED,
 	EXIT_BLOCKED,
 	COLLECTIBLE_BLOCKED,
-	VALID_MAP,
+	VALID_MAP
 }	t_map_status;
-
-typedef struct s_tile
-{
-	t_point			point;
-	t_object_type	object;
-}	t_tile;
-
-typedef struct s_map_objects
-{
-	t_exit			exit;
-	t_floor			floor;
-	t_collectible	collectible;
-}	t_map_objects;
 
 typedef struct s_map
 {
 	char			**grid;
-	unsigned int	width;
-	unsigned int	height;
+	ssize_t			width;
+	ssize_t			height;
+	t_object		object;
+	t_floor			floor;
 	t_map_status	status;
-	t_map_objects	objects;
 }	t_map;
 
 #endif

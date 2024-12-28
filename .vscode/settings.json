@@ -5,6 +5,16 @@
 		"ranges": "c",
 		"functional": "c",
 		"tuple": "c",
-		"utility": "c"
+		"utility": "c",
+		"so_long.h": "c",
+		"object.h": "c",
+		"player.h": "c",
+		"map.h": "c",
+		"point.h": "c",
+		"game.h": "c",
+		"*.png": "c",
+		"mlx42.h": "c",
+		"libft.h": "c",
+		"mlx42_int.h": "c"
 	}
 }

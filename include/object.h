@@ -6,7 +6,7 @@
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 16:31:17 by sklaokli          #+#    #+#             */
-/*   Updated: 2024/12/19 18:45:16 by sklaokli         ###   ########.fr       */
+/*   Updated: 2024/12/28 21:42:35 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,44 @@
 
 typedef enum e_object_type
 {
-	WALL,
-	COLLECTIBLE,
-	EMPTY_SPACE,
-	EXIT,
-	PLAYER,
-	ENEMY
+	E_WALL,
+	E_COLLECTIBLE,
+	E_EMPTY_SPACE,
+	E_EXIT,
+	E_PLAYER,
+	E_ENEMY
 }	t_object_type;
 
-typedef struct s_floor
+typedef struct s_tile
 {
-	unsigned int	width;
-	unsigned int	height;
-}	t_floor;
+	t_point			point;
+	t_object_type	object;
+}	t_tile;
 
 typedef struct s_wall
 {
-	unsigned int	count;
+	ssize_t			count;
+	t_source_mlx	source;
 }	t_wall;
 
-typedef struct s_collectibles
+typedef struct s_collectible
 {
-	unsigned int	count;
-	unsigned int	total;
+	ssize_t			count;
+	ssize_t			collected;
+	t_source_mlx	source;
 }	t_collectible;
+
+typedef struct s_empty_space
+{
+	ssize_t			count;
+	t_source_mlx	source;
+}	t_empty_space;
+
+typedef struct s_floor
+{
+	ssize_t	width;
+	ssize_t	height;
+}	t_floor;
 
 typedef enum e_exit_status
 {
@@ -48,7 +62,9 @@ typedef enum e_exit_status
 
 typedef struct s_exit
 {
-	t_point			point;
+	ssize_t			count;
+	t_source_mlx	hidden;
+	t_source_mlx	appear;
 	t_exit_status	status;
 }	t_exit;
 

@@ -6,59 +6,93 @@
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:49:19 by sklaokli          #+#    #+#             */
-/*   Updated: 2024/12/21 01:18:57 by sklaokli         ###   ########.fr       */
+/*   Updated: 2024/12/24 17:18:22 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/so_long.h"
 
-static void	count_map_objects(t_count_objects *count, t_map *map)
+static void	count_map_objects(t_map *map, t_player *player)
 {
 	t_point	point;
 
-	point.y = 0;
-	while (point.y < map->height)
+	point.y = -1;
+	while (++point.y < map->height)
 	{
-		point.x = 0;
-		while (point.x < map->width)
+		point.x = -1;
+		while (++point.x < map->width)
 		{
-			// printf("[%d][%d]: %c\n", point.y, point.x, map->grid[point.y][point.x]);
 			if (map->grid[point.y][point.x] == EMPTY_SPACE)
-				count->empty_space++;
+				map->object.empty_space.count++;
 			else if (map->grid[point.y][point.x] == WALL)
-				count->wall++;
+				map->object.wall.count++;
 			else if (map->grid[point.y][point.x] == COLLECTBLE)
-				count->collectible++;
+				map->object.collectible.count++;
 			else if (map->grid[point.y][point.x] == EXIT)
-				count->exit++;
+				map->object.exit.count++;
 			else if (map->grid[point.y][point.x] == PLAYER)
-				count->player++;
-			count->total++;
-			point.x++;
+				player->count++;
+			map->object.total++;
 		}
-		point.y++;
 	}
-	printf("empty_space: %d\nwall: %d\ncollectible: %d\nexit: %d\nplayer: %d\ntotal: %d\n", count->empty_space, count->wall, count->collectible, count->exit, count->player, count->total);
+	printf("empty_space: %zu\nwall: %zu\ncollectible: %zu \
+		\nexit: %zu\nplayer: %zu\ntotal: %zu\n", map->object.empty_space.count, \
+		map->object.wall.count, map->object.collectible.count, map->object.exit.count, \
+		player->count, map->object.total);
 }
 
-static void	validate_map_objects(t_count_objects *count, t_map *map)
+static void	validate_map_structure(t_map *map, t_player *player)
 {
-	if (count->exit > EXIT_MAXIMUM || count->player > PLAYER_MAXIMUM)
-		set_map_status(map, EXCESSIVE_OBJECT);
-	else if (count->collectible < COLLECTBLE_MINIMUM)
-		set_map_status(map, MISSING_OBJECT);
-	else if (count->wall < WALL_MINIMUM)
-		set_map_status(map, INCORRECT_BORDER);
-	// printf("wall minimum: %d\n", WALL_MINIMUM);
+	t_point	point;
+
+	point.y = -1;
+	while (++point.y < map->height)
+	{
+		point.x = -1;
+		while (++point.x < map->width)
+		{
+			if ((point.y == 0 || point.y == map->height - 1)
+				&& map->grid[point.y][point.x] != WALL)
+				perror(INCORRECT_BORDER_MSG);
+			if ((point.x == 0 || point.x == map->width - 1)
+				&& map->grid[point.y][point.x] != WALL)
+				perror(INCORRECT_BORDER_MSG);
+			if (map->grid[point.y][point.x] == PLAYER)
+				player->position.start = point;
+			if (is_undefined_parameter(map->grid[point.y][point.x]))
+				perror(UNDEFINED_PARAMETER_MSG);
+		}
+	}
 }
 
-void	validate_map(t_map *map)
+static void	validate_map_objects(t_map *map, t_player *player)
 {
-	t_count_objects	count;
+	if (map->object.exit.count > EXIT_MAXIMUM
+		|| player->count > PLAYER_MAXIMUM)
+		perror(EXCESSIVE_OBJECT_MSG);
+	else if (map->object.collectible.count < OBJECT_MINIMUM
+		|| map->object.exit.count < OBJECT_MINIMUM
+		|| player->count < OBJECT_MINIMUM)
+		perror(MISSING_OBJECT_MSG);
+	else if (map->object.wall.count < WALL_MINIMUM)
+		perror(INCORRECT_BORDER_MSG);
+}
 
+void	initialize_object_count(t_map *map, t_player *player)
+{
+	map->object.empty_space.count = 0;
+	map->object.wall.count = 0;
+	map->object.collectible.count = 0;
+	map->object.exit.count = 0;
+	player->count = 0;
+}
+
+void	validate_map(t_game *game)
+{
 	printf("[ validate map ]\n---------------------------------------------\n");
-	ft_memset(&count, 0, sizeof(count));
-	count_map_objects(&count, map);
-	validate_map_objects(&count, map);
+	initialize_object_count(&game->map, &game->player);
+	count_map_objects(&game->map, &game->player);
+	validate_map_objects(&game->map, &game->player);
+	validate_map_structure(&game->map, &game->player);
 	printf("---------------------------------------------\n");
 }
