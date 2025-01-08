@@ -25,16 +25,12 @@ GNL_DIR	=	libraries/get_next_line
 MLX_DIR	=	libraries/MLX42
 
 ## Source files
-SRC		=	$(SRC_DIR)/main/main.c \
-			$(SRC_DIR)/init/map_setup.c \
-			$(SRC_DIR)/init/validate_map.c \
-			$(SRC_DIR)/init/game_setup.c \
-			$(SRC_DIR)/game/window_init.c \
-			$(SRC_DIR)/game/gameplay.c \
-			$(SRC_DIR)/utils/map_utils.c \
-			$(SRC_DIR)/utils/game_utils.c \
-			$(SRC_DIR)/utils/render.c \
-			$(SRC_DIR)/utils/gameplay_utils.c
+SRC		=	$(SRC_DIR)/main.c \
+			$(SRC_DIR)/init.c \
+			$(SRC_DIR)/utils.c \
+			$(SRC_DIR)/key_hook.c \
+			$(SRC_DIR)/loop_hook.c \
+			$(SRC_DIR)/close_hook.c
 
 INC		=	-I ./include -I $(LIB_DIR)/includes -I $(GNL_DIR)/includes -I $(MLX_DIR)/include
 
@@ -45,7 +41,7 @@ OBJ		=	$(SRC:%.c=%.o)
 RM		=	rm -f
 CC		=	cc
 LIBC	=	ar rcs
-FLAGS	=	-Wunreachable-code -Ofast
+FLAGS	=	-Wunreachable-code -Ofast -g3
 
 ## Color Codes
 CYAN	=	\033[0;36m
@@ -61,7 +57,7 @@ RESET	=	\033[0m
 
 all:		$(NAME)
 
-$(NAME):	$(OBJ)
+$(NAME):	$(OBJ) Makefile
 			@ $(MAKE) -sC $(LIB_DIR)
 			@ $(MAKE) -sC $(GNL_DIR)
 			@ cmake $(MLX_DIR) -B $(MLX_DIR)/build && make -sC $(MLX_DIR)/build

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft.c                                               :+:      :+:    :+:   */
+/*   close_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/23 20:48:23 by sklaokli          #+#    #+#             */
-/*   Updated: 2024/12/23 20:52:01 by sklaokli         ###   ########.fr       */
+/*   Created: 2025/01/08 18:37:38 by sklaokli          #+#    #+#             */
+/*   Updated: 2025/01/08 20:04:16 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/so_long.h"
+#include "../include/so_long.h"
 
-void	*ft_malloc(size_t nbyte, size_t cnt)
+void	ft_close_hook(void *param)
 {
-	void	*ptr;
+	t_game	*game;
 
-	ptr = (void *)malloc(nbyte * cnt);
-	if (!ptr)
-		return (NULL);
-	return (ptr);
+	if (!param)
+		return ;
+	game = param;
+	mlx_terminate(game->mlx);
 }

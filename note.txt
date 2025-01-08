@@ -1,139 +1,130 @@
-static void	prerender_map(mlx_t *mlx, t_player *player, t_map *map)
-{
-	mlx_image_to_window(mlx, map->object.empty_space.source.image, 0, 0);
-	mlx_image_to_window(mlx, map->object.wall.source.image, 0, 0);
-	mlx_image_to_window(mlx, map->object.exit.hidden.image, 0, 0);
-	mlx_image_to_window(mlx, map->object.exit.appear.image, 0, 0);
-	mlx_image_to_window(mlx, map->object.collectible.source.image, 0, 0);
-	mlx_image_to_window(mlx, player->standing.down.image, 0, 0);
-	mlx_image_to_window(mlx, player->standing.down.image, 0, 0);
-	mlx_image_to_window(mlx, player->standing.up.image, 0, 0);
-	mlx_image_to_window(mlx, player->standing.left.image, 0, 0);
-	mlx_image_to_window(mlx, player->standing.right.image, 0, 0);
-	mlx_image_to_window(mlx, player->moving.up.image, 0, 0);
-	mlx_image_to_window(mlx, player->moving.down.image, 0, 0);
-	mlx_image_to_window(mlx, player->moving.left.image, 0, 0);
-	mlx_image_to_window(mlx, player->moving.right.image, 0, 0);
-}
-	if (!param)
-		return ;
-	game = param;
-	point = game->player.position.current;
-	if (keydata.action == MLX_PRESS)
-	{
-		if (keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_UP)
-		{
-			printf("up\n");
-			move_player(game->mlx, &game->player, point, UP);
-		}
-		else if (keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_DOWN)
-		{
-			printf("down\n");
-			move_player(game->mlx, &game->player, point, DOWN);
-		}
-		else if (keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_LEFT)
-		{
-			printf("left\n");
-			move_player(game->mlx, &game->player, point, LEFT);
-		}
-		else if (keydata.key == MLX_KEY_D || keydata.key == MLX_KEY_RIGHT)
-		{
-			printf("right\n");
-			move_player(game->mlx, &game->player, point, RIGHT);
-		}	
-	}
-// static void	set_target_tile(t_player *player, t_map *map, t_direction direction)
-// {
-// 	if (direction == UP)
-// 	{
-// 		player->position.facing = UP;
-// 		player->move.target.point.y = player->position.current.y - 1;
-// 		map->grid[player->position.current.y][player->position.current.x] = EMPTY_SPACE;
-// 		map->grid[player->move.target.point.y][player->move.target.point.x] = PLAYER;
-// 	}
-// 	if (direction == DOWN)
-// 	{
-// 		player->position.facing = DOWN;
-// 		player->move.target.point.y = player->position.current.y + 1;
-// 		map->grid[player->position.current.y][player->position.current.x] = EMPTY_SPACE;
-// 		map->grid[player->move.target.point.y][player->move.target.point.x] = PLAYER;
-// 	}
-// 	if (direction == LEFT)
-// 	{
-// 		player->position.facing = LEFT;
-// 		player->move.target.point.y = player->position.current.x - 1;
-// 		map->grid[player->position.current.y][player->position.current.x] = EMPTY_SPACE;
-// 		map->grid[player->move.target.point.y][player->move.target.point.x] = PLAYER;
-// 	}
-// 	if (direction == RIGHT)
-// 	{
-// 		player->position.facing = RIGHT;
-// 		player->move.target.point.y = player->position.current.x + 1;
-// 		map->grid[player->position.current.y][player->position.current.x] = EMPTY_SPACE;
-// 		map->grid[player->move.target.point.y][player->move.target.point.x] = PLAYER;
-// 	}
-// }
+#include "../include/so_long.h"
 
-// void	move_player(mlx_t *mlx, t_player *player, t_point current, t_direction direction)
-// {
-// 	printf("current: %zu, %zu\n", current.x, current.y);
-// 	player->path.up.point.x = 0;
-// 	player->path.up.point.y = 0;
-// 	player->path.down.point.x = 0;
-// 	player->path.down.point.y = 0;
-// 	player->path.left.point.x = 0;
-// 	player->path.left.point.y = 0;
-// 	player->path.right.point.x = 0;
-// 	player->path.right.point.y = 0;
-// 	printf("up: %zu, %zu\n", player->position.current.x, player->position.current.y - 1);
-// 	printf("down: %zu, %zu\n", player->position.current.x, player->position.current.y + 1);
-// 	printf("left: %zu, %zu\n", player->position.current.x - 1, player->position.current.y);
-// 	printf("right: %zu, %zu\n", player->position.current.x + 1, player->position.current.y);
-// 	reset_player_stage(mlx, player);
-// 	int32_t	n;
-// 	if (direction == UP)
-// 	{
-// 		n = player->standing.up.image->instances->y - 32;
-// 		player->standing.up.image->instances->y = n;
-// 		player->standing.up.image->instances->enabled = true;
-// 	}
-// 	if (direction == DOWN)
-// 	{
-// 		n = player->standing.up.image->instances->y + 32;
-// 		player->standing.down.image->instances->y = n;
-// 		player->standing.down.image->instances->enabled = true;
-// 	}
-// 	if (direction == LEFT)
-// 	{
-// 		n = player->standing.left.image->instances->x - 32;
-// 		player->standing.left.image->instances->x = n;
-// 		player->standing.left.image->instances->enabled = true;
-// 	}
-// 	if (direction == RIGHT)
-// 	{
-// 		n = player->standing.left.image->instances->x + 32;
-// 		player->standing.left.image->instances->x = n;
-// 		player->standing.left.image->instances->enabled = true;
-// 	}
-// }
-// reset_player_stage(game->mlx, &game->player);
-	// if (direction == UP)
+char	*copy_row(char *line)
+{
+	int		len;
+	char	*row;
+
+	len = 0;
+	while (line[len] && line[len] != '\n')
+		len++;
+	row = (char *)malloc(sizeof(char) * (len + 1));
+	if (!row)
+		return (NULL);
+	row[len] = '\0';
+	while (len-- > 0)
+		row[len] = line[len];
+	return (row);
+}
+
+int	count_width(char *line)
+{
+	int	width;
+
+	if (!line)
+		return (0);
+	width = 0;
+	while (line[width] && line[width] != '\n')
+		width++;
+	return (width);
+}
+
+int	count_height(t_list *read)
+{
+	int	height;
+
+	if (!read)
+		return (0);
+	height = ft_lstsize(read);
+	return (height);
+}
+
+#include "../include/so_long.h"
+
+static void	init_grid(t_map *map, t_file *file)
+{
+	int	i;
+
+	map->grid = (char **)malloc(sizeof(char *) * (map->height + 1));
+	if (!map->grid)
+		ft_exit(ERROR_MSG, EXIT_FAILURE);
+	i = -1;
+	while (++i < map->height)
+	{
+		map->grid[i] = copy_row(file->read->content);
+		if (!map->grid[i])
+			ft_exit(ERROR_MSG, EXIT_FAILURE);
+		file->read = file->read->next;
+	}
+	i = -1;
+	while (map->grid[++i])
+		printf("grid[%d]:\t%s\n", i, map->grid[i]);
+}
+
+static void	read_file(t_map *map, t_file *file)
+{
+	file->fd = open(file->path, O_RDONLY);
+	file->line = get_next_line(file->fd);
+	if (!file->line)
+		ft_exit(ERROR_MSG, EXIT_FAILURE);
+	file->read = NULL;
+	map->width = count_width(file->line);
+	while (1)
+	{
+		ft_lstadd_back(&file->read, ft_lstnew(file->line));
+		// printf("%s", file->line);
+		file->line = get_next_line(file->fd);
+		if (!file->line)
+			break ;
+		if (map->width != count_width(file->line)) 
+			ft_exit(ERROR_MSG, EXIT_FAILURE);
+	}
+	// printf("\n\n");
+	// while (file->read)
 	// {
-	// 	game->player.standing.up.image->instances->y = game->player.position.current.y - 32;
-	// 	game->player.standing.up.image->instances->enabled = true;
+	// 	printf("%s", (char *)file->read->content);
+	// 	file->read = file->read->next;
 	// }
-	// if (direction == DOWN)
-	// {
-	// 	game->player.standing.down.image->instances->y += 32;
-	// 	game->player.standing.down.image->instances->enabled = true;
-	// }
-	// if (direction == LEFT)
-	// {
-	// 	game->player.standing.left.image->instances->x -= 32;
-	// 	game->player.standing.left.image->instances->enabled = true;
-	// }
-	// if (direction == RIGHT)
-	// {
-	// 	game->player.standing.right.image->instances->x += 32;
-	// 	game->player.standing.right.image->instances->enabled = true;
-	// }
+	map->height = count_height(file->read);
+	// printf("width: %zd height: %zd\n", map->width, map->height);
+	close(file->fd);
+}
+
+void	init_map(t_game *game)
+{
+	read_file(&game->map, &game->file);
+	init_grid(&game->map, &game->file);
+}
+
+#include "../include/so_long.h"
+
+void	parser(t_game *game, int argc, char *argv[])
+{
+	if (argc < 2 || ft_is_invalid_argv(argc, argv))
+		ft_exit(ERROR_MSG, EXIT_FAILURE);
+	game->file.path = argv[1];
+	game->file.fd = open(argv[1], O_RDONLY);
+	if (game->file.fd < 0)
+		ft_exit(ERROR_MSG, EXIT_FAILURE);
+	close(game->file.fd);
+	while (*argv[1] && *argv[1] != '.')
+		argv[1]++;
+	if (ft_strncmp(argv[1], ".ber", -1))
+		ft_exit(ERROR_MSG, EXIT_FAILURE);
+}
+
+void	init(t_game *game, int argc, char *argv[])
+{
+	ft_bzero(game, sizeof(game));
+	parser(game, argc, argv);
+	init_map(game);
+	// init_data(game);
+	// init_window(game);
+}
+
+int	main(int argc, char *argv[])
+{
+	t_game	game;
+
+	init(&game, argc, argv);
+}

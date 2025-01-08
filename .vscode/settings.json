@@ -15,6 +15,11 @@
 		"*.png": "c",
 		"mlx42.h": "c",
 		"libft.h": "c",
-		"mlx42_int.h": "c"
+		"mlx42_int.h": "c",
+		"typedef.h": "c",
+		"define.h": "c",
+		"iosfwd": "c",
+		"limits": "c",
+		"streambuf": "c"
 	}
 }
