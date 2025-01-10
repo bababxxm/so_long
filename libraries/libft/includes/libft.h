@@ -6,7 +6,7 @@
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:57:13 by sklaokli          #+#    #+#             */
-/*   Updated: 2024/12/19 21:31:57 by sklaokli         ###   ########.fr       */
+/*   Updated: 2025/01/09 23:01:16 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <limits.h>
-# include <fcntl.h>
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

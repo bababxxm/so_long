@@ -6,7 +6,7 @@
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 16:42:20 by sklaokli          #+#    #+#             */
-/*   Updated: 2024/12/20 03:04:32 by sklaokli         ###   ########.fr       */
+/*   Updated: 2025/01/10 21:26:09 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	if (!lst || !new)
 		return ;
 	if (*lst)
-	{	
+	{
 		lastnode = ft_lstlast(*lst);
 		lastnode -> next = new;
 	}

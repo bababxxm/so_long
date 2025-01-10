@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_hook.c                                       :+:      :+:    :+:   */
+/*   game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 18:37:38 by sklaokli          #+#    #+#             */
-/*   Updated: 2025/01/08 20:04:16 by sklaokli         ###   ########.fr       */
+/*   Created: 2024/12/29 20:39:15 by sklaokli          #+#    #+#             */
+/*   Updated: 2025/01/10 20:31:38 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#ifndef GAME_H
+# define GAME_H
 
-void	ft_close_hook(void *param)
+typedef struct s_file
 {
-	t_game	*game;
+	int		fd;
+	void	*path;
+	char	*line;
+	t_list	*read;
+}	t_file;
 
-	if (!param)
-		return ;
-	game = param;
-	mlx_terminate(game->mlx);
-}
+typedef struct s_game
+{
+	mlx_t		*mlx;
+	t_source	source;
+	t_file		file;
+	t_map		map;
+	t_player	player;
+}	t_game;
+
+#endif

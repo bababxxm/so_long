@@ -20,6 +20,10 @@
 		"define.h": "c",
 		"iosfwd": "c",
 		"limits": "c",
-		"streambuf": "c"
+		"streambuf": "c",
+		"get_next_line.h": "c",
+		"string_view": "c",
+		"initializer_list": "c",
+		"span": "c"
 	}
 }

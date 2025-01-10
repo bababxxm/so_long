@@ -1,24 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   loop_hook.c                                        :+:      :+:    :+:   */
+/*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/08 18:37:28 by sklaokli          #+#    #+#             */
-/*   Updated: 2025/01/08 20:06:32 by sklaokli         ###   ########.fr       */
+/*   Created: 2025/01/09 22:46:18 by sklaokli          #+#    #+#             */
+/*   Updated: 2025/01/10 00:50:53 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#ifndef PLAYER_H
+# define PLAYER_H
 
-void	ft_loop_hook(void *param)
+typedef enum e_direction
 {
-	t_game	*game;
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+}	t_direction;
 
-	game = param;
-	if (game->map.object.exit_status == APPEAR
-		&& game->player.current.x == game->map.object.exit_point.x
-		&& game->player.current.y == game->map.object.exit_point.y)
-	mlx_close_window(game->mlx);
-}
+typedef struct s_point
+{
+	ssize_t	x;
+	ssize_t	y;
+}	t_point;
+
+typedef struct s_player
+{
+	t_point	current;
+	t_point	target;
+	ssize_t	moves;
+	ssize_t	collected;
+}	t_player;
+
+#endif

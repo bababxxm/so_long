@@ -27,10 +27,10 @@ MLX_DIR	=	libraries/MLX42
 ## Source files
 SRC		=	$(SRC_DIR)/main.c \
 			$(SRC_DIR)/init.c \
-			$(SRC_DIR)/utils.c \
-			$(SRC_DIR)/key_hook.c \
-			$(SRC_DIR)/loop_hook.c \
-			$(SRC_DIR)/close_hook.c
+			$(SRC_DIR)/flood_fill.c \
+			$(SRC_DIR)/render.c \
+			$(SRC_DIR)/gameplay.c \
+			$(SRC_DIR)/utils.c
 
 INC		=	-I ./include -I $(LIB_DIR)/includes -I $(GNL_DIR)/includes -I $(MLX_DIR)/include
 
@@ -80,11 +80,6 @@ fclean:
 			@ echo "$(CYAN)All so_long executable files have been cleaned.$(RESET)"
 
 re:			fclean all
-
-github:
-			@ git add .
-			@ git commit -m "so_long"
-			@ git push
 
 clone:
 			@ git clone https://github.com/codam-coding-college/MLX42.git libraries/MLX42

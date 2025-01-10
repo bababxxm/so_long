@@ -1,31 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   typedef.h                                          :+:      :+:    :+:   */
+/*   map.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sklaokli <sklaokli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/29 20:39:15 by sklaokli          #+#    #+#             */
-/*   Updated: 2025/01/08 19:51:43 by sklaokli         ###   ########.fr       */
+/*   Created: 2025/01/09 22:46:16 by sklaokli          #+#    #+#             */
+/*   Updated: 2025/01/10 20:38:31 by sklaokli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPEDEF_H
-# define TYPEDEF_H
-
-typedef enum e_direction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-}	t_direction;
-
-typedef struct s_point
-{
-	ssize_t	x;
-	ssize_t	y;
-}	t_point;
+#ifndef MAP_H
+# define MAP_H
 
 typedef struct s_source_mlx
 {
@@ -38,14 +24,6 @@ typedef enum e_exit_status
 	HIDDEN,
 	APPEAR
 }	t_exit_status;
-
-typedef struct s_player
-{
-	t_point	current;
-	t_point	target;
-	ssize_t	moves;
-	ssize_t	collected;
-}	t_player;
 
 typedef struct s_count
 {
@@ -76,40 +54,25 @@ typedef struct s_object
 	t_exit_status	exit_status;
 }	t_object;
 
+typedef enum e_map_status
+{
+	UNDEFINED_PARAMETER,
+	NON_RECTANGULAR,
+	INCORRECT_BORDER,
+	MISSING_OBJECT,
+	EXCESSIVE_OBJECT,
+	OBJECT_BLOCKED,
+	VALID_MAP
+}	t_map_status;
+
 typedef struct s_map
 {
-	char		**grid;
-	ssize_t		width;
-	ssize_t		height;
-	t_object	object;
+	char			**grid;
+	char			**tab;
+	ssize_t			width;
+	ssize_t			height;
+	t_object		object;
+	t_map_status	status;
 }	t_map;
-
-typedef struct s_file
-{
-	int		fd;
-	void	*path;
-	char	*line;
-	t_list	*read;
-}	t_file;
-
-typedef enum e_game_status
-{
-	LOADING,
-	ERROR,
-	READY,
-	RUNNING,
-	CLOSED,
-	FINISHED
-}	t_game_status;
-
-typedef struct s_game
-{
-	mlx_t			*mlx;
-	t_source		source;
-	t_file			file;
-	t_map			map;
-	t_player		player;
-	t_game_status	status;
-}	t_game;
 
 #endif
